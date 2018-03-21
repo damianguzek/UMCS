@@ -5,4 +5,4 @@ then
     exit
 fi
 
-env | grep "^$1" | sort -r >'zmienne.txt'
+env | grep "^$1" | sort -r | tee "zmienne.txt"
