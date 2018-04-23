@@ -6,7 +6,6 @@ using namespace std;
 
 class WordReplacer
 {
-	//vector<string> content;
 	string* content;
 	int size;
 public:
