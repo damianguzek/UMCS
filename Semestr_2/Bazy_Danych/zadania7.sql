@@ -26,48 +26,48 @@ COMMIT;
 
 --6a
 UPDATE
-product
-SET suggested_whlsl_price = 1.15*suggested_whlsl_price;
+item
+SET price = 1.15*price;
 
 --6b
 SAVEPOINT S1;
 
 --6c
-SELECT SUM(suggested_whlsl_price)
-FROM product;
+SELECT SUM(price)
+FROM item;
 
 --6d
-UPDATE product
-SET suggested_whlsl_price = 1.1*suggested_whlsl_price;
+UPDATE item
+SET price = 1.1*price;
 
 --6e
 SAVEPOINT S2;
 
 --6f
-SELECT SUM(suggested_whlsl_price)
-FROM product;
+SELECT SUM(price)
+FROM item;
 
 --6g
-UPDATE product
-SET suggested_whlsl_price = 1.6*suggested_whlsl_price;
+UPDATE item
+SET price = 1.6*price;
 
 --6h
-SELECT SUM(suggested_whlsl_price)
-FROM product;
+SELECT SUM(price)
+FROM item;
 
 --6i
 ROLLBACK TO SAVEPOINT S2;
 
 --6j
-SELECT SUM(suggested_whlsl_price)
-FROM product;
+SELECT SUM(price)
+FROM item;
 
 --6k
 ROLLBACK TO SAVEPOINT S1;
 
 --6l
-SELECT SUM(suggested_whlsl_price)
-FROM product;
+SELECT SUM(price)
+FROM item;
 
 --6m
 COMMIT;
