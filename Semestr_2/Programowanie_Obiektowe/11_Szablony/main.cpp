@@ -5,118 +5,132 @@
 
 using namespace std;
 
-//zadanie 1
-template<typename T>
-T& foo(T* begin, T* end)
+template <typename T>
+T& foo1(T* begin, T* end)
 {
-    T* min = begin;
-    for(T* i = begin;i <=end;i++)
-    {
-        if(*i < *min) min = i;
-    }
-    return *min;
+	T* min = begin;
+	for (T* i = begin; i <= end; i++)
+	{
+		if (*i < *min)
+			min = i;
+	}
+	return *min;
 }
 
-//zadanie 2
 template<>
-string& foo<string>(string* begin, string* end)
+string& foo1(string* begin, string* end)
 {
-    string* min = begin;
-    for(string* i = begin; i <= end;++i)
-    {
-        if(lexicographical_compare(i->begin(),i->end(),min->begin(),min->end(),[](char a, char b)->bool{
-                return tolower(a) < tolower(b);
-        }))
-        {
-            min = i;
-        }
-    }
-    return *min;
+	string* min = begin;
+	for (string* i = begin; i <= end; ++i)
+	{
+		if (lexicographical_compare(i->begin(), i->end(), min->begin(), min->end(), [](char a, char b) -> bool
+		{return tolower(a) < tolower(b); }))
+		{
+			min = i;
+		}
+	}
+	return *min;
 }
 
-//zadanie 3
-//nice :>
+
 template <template<typename ...> class C, typename T>
-T& foo3(C<T>& con)
+T& foo3(C<T>& container)
 {
-    T &min = *con.begin();
-    for(auto i = con.begin();i!=con.end();++i)
-    {
-        if(*i < min) min = *i;
-    }
-    return min;
+	T& min = *container.begin();
+	for (auto& i : container)
+	{
+		if (i < min)
+		{
+			min = i;
+		}
+	}
+	return min;
 }
 
-//zadanie 4
+//zadanie 1 pd
+template <template<typename ...> class C>
+string& foo3(C<string> container)
+{
+	string& min = *container.begin();
+	for (auto& i : container)
+	{
+		if (lexicographical_compare(i.begin(),i.end(),min.begin(),min.end()))
+		{
+			min = i;
+		}
+	}
+
+	return min;
+}
 
 template <typename T, int size>
-class Klasa
+class Table
 {
-    T tab[size];
+	T* tab;
+
 public:
-    int getSize(){return size;}
-    T& operator[](int index);
-    const T& operator[](int index) const;
-    //zadanie 5
-    template<typename R>
-    void Add(const R& a)
-    {
-        for(int i = 0; i<size;i++)
-            tab[i] += a;
-    }
+	Table();
+	~Table();
+	T& operator[](int index);
+	template<typename R> void Add(R& a);
 };
 
-template <typename T, int size>
-T& Klasa<T,size>::operator[](int index)
+
+template<typename T, int size>
+Table<T, size>::Table()
 {
-    return tab[index];
+	tab = new T[size];
 }
 
-template <typename T, int size>
-const T& Klasa<T,size>::operator[](int index) const
+template<typename T, int size>
+Table<T, size>::~Table()
 {
-    return tab[index];
+	delete[] tab;
 }
 
+template<typename T, int size>
+T& Table<T, size>::operator[](int index)
+{
+	return tab[index];
+}
 
-
+//zadanie 5
+template<typename T, int size>
+template<typename R>
+void Table<T, size>::Add(R & a)
+{
+	for (int i = 0; i < size; i++)
+		tab[i] += a;
+}
 
 int main()
 {
-    //test zadanie 1
-    int* tab = new int [5]{1,2,3,4,5};
-    double * t = new double[3]{1.2,4.5,3.3};
-    double x = foo<int>(tab+2,tab+4);
-    cout<<x<<endl;
+	//test 1
+	int tab[10]{ 1,2,5,7,9,2,3,5,6,8 };
+	cout << foo1(tab + 2, tab + 9) << endl;
 
-    delete[] tab;
-    delete[] t;
+	//test 2
+	string t[4]{ "ala","ma","kota","null" };
+	cout << foo1(t, t + 3) << endl;
 
-    //test zadanie 2
-    string * s = new string[4]{"Bla","AAabc","kota","AAaAAaaaaaaaaaaaaaaa"};
+	//test3
+	vector<int> vec{ 1,2,3 };
+	cout << foo3<vector, int>(vec) << endl;
 
-    cout<<foo<string>(s,s+3)<<endl;
+	//test zadanie 1 pd
+	vector<string> vecs{ "kota","ala","ma" };
+	cout << foo3(vecs) << endl; // dla VS 2017
+								//cout << foo3<vector, string>(vecs) << endl; // dla GCC 7.2
 
-    delete[] s;
+								//test4
+	{
+		Table<int, 3> table;
+		table[0] = 3;
+		table[1] = 4;
+		table[2] = 134;
+		cout << table[2] << endl;
+	}
 
-    //test zadanie 3
-
-    vector<int> vec{2,3,5,7,2,4,7,89};
-    cout<<foo3<vector,int>(vec)<<endl;
-
-    //test zadanie 4
-    Klasa<int,3> klasa;
-    klasa[0] = 1;
-    klasa[1] = 2;
-    klasa[2] = 45;
-    cout<<klasa[2]<<endl;
-
-    //test zadanie 5
-    klasa.Add(3);
-    cout<<klasa[2]<<endl;
-
-
-
-    return 0;
+	return 0;
 }
 
