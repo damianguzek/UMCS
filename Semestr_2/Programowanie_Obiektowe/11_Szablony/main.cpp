@@ -54,7 +54,7 @@ string& foo3(C<string> container)
 	string& min = *container.begin();
 	for (auto& i : container)
 	{
-		if (lexicographical_compare(i.begin(),i.end(),min.begin(),min.end()))
+		if (lexicographical_compare(i.begin(), i.end(), min.begin(), min.end()))
 		{
 			min = i;
 		}
@@ -103,6 +103,50 @@ void Table<T, size>::Add(R & a)
 		tab[i] += a;
 }
 
+
+//Zadanie 2 pd
+
+template <int size>
+class Table<string, size>
+{
+	string* tab;
+
+public:
+	Table();
+	~Table();
+	string& operator[](int index);
+	 void Add(const string& a);
+};
+
+template<int size>
+Table<string, size>::Table()
+{
+	tab = new string[size];
+}
+
+template<int size>
+Table<string, size>::~Table()
+{
+	delete[] tab;
+}
+
+
+template<int size>
+string& Table<string, size>::operator[](int index)
+{
+	return tab[index];
+}
+
+template <int size>
+void Table<string, size>::Add(const string & a)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		if (tab[i][tab[i].size()] == ' ' || a[0] == ' ') tab[i] += a;
+		else tab[i] += ' ' + a;
+	}
+}
+
 int main()
 {
 	//test 1
@@ -120,14 +164,24 @@ int main()
 	//test zadanie 1 pd
 	vector<string> vecs{ "kota","ala","ma" };
 	cout << foo3(vecs) << endl; // dla VS 2017
-								//cout << foo3<vector, string>(vecs) << endl; // dla GCC 7.2
+	//cout << foo3<vector, string>(vecs) << endl; // dla GCC 7.2
 
-								//test4
+	//test4
 	{
 		Table<int, 3> table;
 		table[0] = 3;
 		table[1] = 4;
 		table[2] = 134;
+		cout << table[2] << endl;
+	}
+
+	//test 2 PD
+	{
+		Table<string, 3> table;
+		table[0] = "ala";
+		table[1] = "ma";
+		table[2] = "kota";
+		table.Add("cos");
 		cout << table[2] << endl;
 	}
 
