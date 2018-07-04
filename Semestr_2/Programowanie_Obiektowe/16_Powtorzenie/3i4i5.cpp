@@ -10,22 +10,22 @@ class StringList
 {
 	list<string> listOfStrings;
 
-	//operatory poza klas¹ musz¹ byæ zaprzyjaznione
+	//operatory poza klas¹ musza byc zaprzyjaznione
 	friend StringList operator+(const StringList& stringList,string str);
 	friend StringList operator-(const StringList& stringList, string str);
 
 	//do zadania 4
 	friend ostream& operator<<(ostream& os, StringList& stringList);
-	//przyda³oby siê coœ co przechowa nam informacjê, które slowo obecnie mamy przekazywaæ
+	//przydaloby sie cos co przechowa nam informacje, ktore slowo obecnie mamy przekazywac
 	int pozycja{ 0 };
-	string getSlowo(); // metoda która bedzie zwraca³a nam odpowiednie slowo z listy
+	string getSlowo(); // metoda która bedzie zwracala nam odpowiednie slowo z listy
 
 };
 
 StringList operator+(const StringList& stringList, string str)
 {
 	StringList newStringList = stringList; // tworzymy nowy obiekt
-	newStringList.listOfStrings.push_back(str); // twochê d³ugie ale po prostu dodajemy napis do listy
+	newStringList.listOfStrings.push_back(str); // twochê dlugie ale po prostu dodajemy napis do listy
 	return newStringList;
 }
 
@@ -35,7 +35,7 @@ StringList operator-(const StringList& stringList, string str)
 	StringList newStringList = stringList;
 	// szukamy napisu w liscie. Fukcja find zwraca nam iterator na znaleziony element
 	list<string>::iterator iter = find(newStringList.listOfStrings.begin(), newStringList.listOfStrings.end(), str);
-	if (iter != newStringList.listOfStrings.end()) // albo iterator za ostatni element ( end() ) jeœli nic nie znajdzie
+	if (iter != newStringList.listOfStrings.end()) // albo iterator za ostatni element ( end() ) jesli nic nie znajdzie
 	{
 		newStringList.listOfStrings.erase(iter); // usuwamy element z listy
 	}
@@ -45,7 +45,7 @@ StringList operator-(const StringList& stringList, string str)
 //zadanie 4
 
 //implentacja naszej metody
-//Metoda nieoptymalna ale w miarê ³atwa i logiczna i dziala :>
+//Metoda nieoptymalna ale w miare ³atwa i logiczna i dziala :>
 string StringList::getSlowo()
 {
 	auto iter = listOfStrings.begin(); 
@@ -59,12 +59,12 @@ string StringList::getSlowo()
 
 			//zadanie 5 ---------------------------------------------------
 
-			//sprawdzamy czy wyszliœmy poza zakres listy i jeœli tak to rzucamy wyj¹tek
+			//sprawdzamy czy wyszlismy poza zakres listy i jeœli tak to rzucamy wyjatek
 			if (iter == listOfStrings.end())
 			{
 				pozycja = 0;
 				throw out_of_range("String List Out Of Range");
-				//wracamy na pocz¹tek
+				//wracamy na poczatek
 			}
 			//koniec 5 ----------------------------------------------------
 
@@ -80,7 +80,7 @@ string StringList::getSlowo()
 //operator<< zawsze zwraca ostream i jako pierwszy parametr przyjmuje ostream
 ostream& operator<<(ostream& os, StringList& stringList)
 {
-	os << stringList.getSlowo(); //Uwaga. U¿ywamy naszego "os" a nie cout !!!
+	os << stringList.getSlowo(); //Uwaga. Uzywamy naszego "os" a nie cout !!!
 	return os;
 }
 
@@ -107,7 +107,7 @@ int main()
 		cout << stringList << endl;
 		cout << stringList << endl;
 	}
-	catch (exception& ex) // ³apiemy wyj¹tek :)
+	catch (exception& ex) // lapiemy wyjatek :)
 	{
 		cout << ex.what() << endl;
 	}
